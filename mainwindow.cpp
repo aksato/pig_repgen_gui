@@ -15,10 +15,30 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_generatePushButton_clicked()
 {
     nlohmann::json data;
-    data["name"] = "world";
 
-    qInfo() << QString::fromStdString(inja::render("Hello {{ name }}!", data)); // Returns std::string "Hello world!"
+    // Get name from line edit UI
+    QString name = ui->nameLineEdit->text();
+    data["name"] = !name.isEmpty() ? name.toStdString() : "NoName";
+
+    // LaTeX template with placeholders
+    std::string latexTemplate = R"(\documentclass{article}
+    \begin{document}
+    Hello {{ name }}
+    \end{document})";
+
+    std::string renderedLatex = inja::render(latexTemplate, data);
+
+    // Write the output to a .tex file
+    std::ofstream texFile("mesonqtinja.tex");
+    texFile << renderedLatex;
+    texFile.close();
+
+    // Compile LaTeX to PDF
+    system("pdflatex mesonqtinja.tex");
+
+    ui->statusbar->showMessage(tr("PDF generated successfully!"), 5000);
 }
+

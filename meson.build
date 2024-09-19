@@ -1,4 +1,4 @@
-project('mesonqt2', 'cpp', default_options: ['cpp_std=c++17'])
+project('mesonqtinja', 'cpp', default_options: ['cpp_std=c++17'])
 
 qt5_mod = import('qt5')
 qt5widgets = dependency('qt5', modules : 'Widgets')
@@ -15,7 +15,7 @@ processed = qt5_mod.preprocess(
   qresources  : 'resources.qrc',
 )
 
-q5exe = executable('mesonqt',
+q5exe = executable('mesonqtinja',
   sources     : ['main.cpp',
                  'mainwindow.cpp',
                  processed],

@@ -32,7 +32,11 @@
         <item>
          <widget class="QPushButton" name="filenamePushButton">
           <property name="text">
-           <string>Choose</string>
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>:/icons/diskette.png</normaloff>:/icons/diskette.png</iconset>
           </property>
          </widget>
         </item>

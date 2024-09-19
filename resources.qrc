@@ -1,8 +1,5 @@
 <RCC>
     <qresource prefix="/icons">
-        <file>twitter.png</file>
-    </qresource>
-    <qresource prefix="/icon">
         <file>diskette.png</file>
     </qresource>
 </RCC>

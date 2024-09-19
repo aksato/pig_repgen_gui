@@ -17,8 +17,13 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+signals:
+    void fileSelected(const QString &filePath);
+
 private slots:
     void on_generatePushButton_clicked();
+
+    void on_filenamePushButton_clicked();
 
 private:
     Ui::MainWindow *ui;

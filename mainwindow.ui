@@ -18,7 +18,28 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
+       <layout class="QHBoxLayout" name="filenameHorizontalLayout">
+        <item>
+         <widget class="QLabel" name="filenameLabel">
+          <property name="text">
+           <string>Save as:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="filenameLineEdit"/>
+        </item>
+        <item>
+         <widget class="QPushButton" name="filenamePushButton">
+          <property name="text">
+           <string>Choose</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="nameHorizontalLayout">
         <item>
          <widget class="QLabel" name="nameLabel">
           <property name="text">
@@ -52,5 +73,25 @@
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>MainWindow</sender>
+   <signal>fileSelected(QString)</signal>
+   <receiver>filenameLineEdit</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>289</x>
+     <y>180</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>272</x>
+     <y>80</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <signal>fileSelected(QString)</signal>
+ </slots>
 </ui>

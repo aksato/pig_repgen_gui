@@ -2,7 +2,7 @@
 #include "./ui_mainwindow.h"
 #include <QDebug>
 #include <QString>
-#include <inja/inja.hpp>
+#include "repgen/repgen.h"
 #include <QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -24,39 +24,21 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_generatePushButton_clicked()
 {
-    nlohmann::json data;
-
     // Get name from line edit UI
     QString name = ui->nameLineEdit->text();
-    data["name"] = !name.isEmpty() ? name.toStdString() : "NoName";
+    std::string reportName = !name.isEmpty() ? name.toStdString() : "NoName";
+
+    // Generate latex as string
+    std::string renderedLatex = repgen::generateAnomaliesSummary(reportName);
 
     // Get the final output PDF path from filenameLineEdit
     QString pdfFilePath = ui->filenameLineEdit->text();
 
-    // Create the .tex file path using QDir::filePath() for better platform compatibility
-    QFileInfo info(pdfFilePath);
-    QString texFilePath = QDir(info.path()).filePath(info.baseName() + ".tex");
-
-    // LaTeX template with placeholders
-    std::string latexTemplate = R"(\documentclass{article}
-    \begin{document}
-    Hello {{ name }}
-    \end{document})";
-
-    std::string renderedLatex = inja::render(latexTemplate, data);
-
-    // Write the output to a .tex file
-    std::ofstream texFile(texFilePath.toStdString());
-    if (!texFile) {
+    // Compile LaTeX to PDF using a generated .tex file
+    if(!repgen::compileToPdf(renderedLatex, pdfFilePath.toStdString())){
         ui->statusbar->showMessage(tr("Error writing to file!"), 5000);
         return;
     }
-    texFile << renderedLatex;
-    texFile.close();
-
-    // Compile LaTeX to PDF using the generated .tex file
-    QString command = "pdflatex " + texFilePath;
-    system(command.toStdString().c_str());
 
     ui->statusbar->showMessage(tr("PDF generated successfully!"), 5000);
 }

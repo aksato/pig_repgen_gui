@@ -17,6 +17,7 @@ processed = qt5_mod.preprocess(
 
 q5exe = executable('mesonqtinja',
   sources     : ['main.cpp',
+                 'repgen/repgen.cpp',
                  'mainwindow.cpp',
                  processed],
   dependencies: [qt5widgets, qt5core, qt5gui, inja_dep]  # Link Inja library

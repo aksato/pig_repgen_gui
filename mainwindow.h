@@ -19,11 +19,14 @@ public:
 
 signals:
     void fileSelected(const QString &filePath);
+    void dbFileSelected(const QString &filePath);
 
 private slots:
     void on_generatePushButton_clicked();
 
     void on_filenamePushButton_clicked();
+
+    void on_dbFilenamePushButton_clicked();
 
 private:
     Ui::MainWindow *ui;

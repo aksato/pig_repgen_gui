@@ -28,29 +28,10 @@ MainWindow::~MainWindow()
 void MainWindow::on_generatePushButton_clicked()
 {
     // Get name from line edit UI
-    QString name = ui->nameLineEdit->text();
-    std::string reportName = !name.isEmpty() ? name.toStdString() : "NoName";
     std::string dbFile = ui->dbFilenameLineEdit->text().toStdString();
 
-    // Read Database, initialize storage with ORM mappings
-    auto storage = initStorage(dbFile);
-
-    // Fetch all entries from the marked_feature table
-    auto marked_features = storage.get_all<MarkedFeature>();
-
-    // Display the fetched data
-    for (const auto &feature : marked_features)
-    {
-        qInfo() << "ID: " << feature.id
-                << ", Dist0: " << feature.dist0 << ", Angle0: " << feature.angle0
-                << ", Dist1: " << feature.dist1 << ", Angle1: " << feature.angle1
-                << ", Feature Type: " << feature.feature_type
-                << ", Note: " << QString::fromStdString(feature.note)
-                << ", Is Cluster: " << feature.is_cluster;
-    }
-
     // Generate latex as string
-    std::string renderedLatex = repgen::generateAnomaliesSummary(reportName);
+    std::string renderedLatex = repgen::generateAnomaliesSummary(dbFile);
 
     // Get the final output PDF path from filenameLineEdit
     QString pdfFilePath = ui->filenameLineEdit->text();

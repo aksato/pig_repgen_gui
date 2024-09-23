@@ -16,16 +16,6 @@ struct MarkedFeature
     int is_cluster;   // Corresponds to "is_cluster" in the table (INTEGER)
 };
 
-auto initStorage(const std::string &db_path)
-{
-    return make_storage(db_path,
-                        make_table("marked_feature",
-                                   make_column("id", &MarkedFeature::id, primary_key().autoincrement()),
-                                   make_column("dist0", &MarkedFeature::dist0),
-                                   make_column("angle0", &MarkedFeature::angle0),
-                                   make_column("dist1", &MarkedFeature::dist1),
-                                   make_column("angle1", &MarkedFeature::angle1),
-                                   make_column("feature_type", &MarkedFeature::feature_type),
-                                   make_column("note", &MarkedFeature::note),
-                                   make_column("is_cluster", &MarkedFeature::is_cluster)));
-}
+int getCountMarkedFeatures(const std::string &db_path);
+
+std::map<std::string, int> getCountByMarkedFeaturesType(const std::string &db_path);

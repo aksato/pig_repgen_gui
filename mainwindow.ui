@@ -64,27 +64,6 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="nameHorizontalLayout">
-        <item>
-         <widget class="QLabel" name="nameLabel">
-          <property name="text">
-           <string>Your Name:</string>
-          </property>
-          <property name="scaledContents">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="nameLineEdit">
-          <property name="placeholderText">
-           <string>Enter your name</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
        <widget class="QPushButton" name="generatePushButton">
         <property name="text">
          <string>Generate</string>

@@ -11,11 +11,22 @@ std::string repgen::generateAnomaliesSummary(std::string dbFile)
     auto count = getCountMarkedFeatures(dbFile);
     auto countsByType = getCountByMarkedFeaturesType(dbFile);
 
+    if (!count || !countsByType)
+    {
+        return R"(\documentclass{article}
+        \begin{document}
+        \begin{center}
+        Error fetching data from database
+        \end{center}
+        \end{document})";
+        "Error fetching data from database";
+    }
+
     nlohmann::json data;
-    data["totalAnomalies"] = count;
-    data["metalAnomalies"] = countsByType["0"];
-    data["geometryAnomalies"] = countsByType["1"];
-    data["laminationInclusions"] = countsByType["2"];
+    data["totalAnomalies"] = *count;
+    data["metalAnomalies"] = (*countsByType)["0"];
+    data["geometryAnomalies"] = (*countsByType)["1"];
+    data["laminationInclusions"] = (*countsByType)["2"];
 
     // LaTeX template with placeholders
     std::string latexTemplate = R"(\documentclass{article}

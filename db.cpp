@@ -1,39 +1,32 @@
 #include "db.h"
-
-auto initStorage(const std::string &db_path)
-{
-    return make_storage(db_path,
-                        make_table("marked_feature",
-                                   make_column("id", &MarkedFeature::id, primary_key().autoincrement()),
-                                   make_column("dist0", &MarkedFeature::dist0),
-                                   make_column("angle0", &MarkedFeature::angle0),
-                                   make_column("dist1", &MarkedFeature::dist1),
-                                   make_column("angle1", &MarkedFeature::angle1),
-                                   make_column("feature_type", &MarkedFeature::feature_type),
-                                   make_column("note", &MarkedFeature::note),
-                                   make_column("is_cluster", &MarkedFeature::is_cluster)));
-}
+#include <SQLiteCpp/SQLiteCpp.h>
 
 int getCountMarkedFeatures(const std::string &db_path)
 {
-    // Read Database, initialize storage with ORM mappings
-    auto storage = initStorage(db_path);
+    // Open a database file
+    SQLite::Database db(db_path);
 
-    // Fetch count of all entries from the marked_feature table
-    return storage.count<MarkedFeature>();
+    // Return count of all entries from the marked_feature table
+    return db.execAndGet("SELECT COUNT(*) FROM marked_feature");
 }
 
 std::map<std::string, int> getCountByMarkedFeaturesType(const std::string &db_path)
 {
-    // Read Database, initialize storage with ORM mappings
-    auto storage = initStorage(db_path);
+    // Open a database file
+    SQLite::Database db(db_path);
 
-    // Perform the query: SELECT COUNT(*), feature_type FROM marked_feature GROUP BY feature_type
-    auto results = storage.select(columns(count(&MarkedFeature::id), &MarkedFeature::feature_type),
-                                  group_by(&MarkedFeature::feature_type));
+    // Compile a SQL query
+    SQLite::Statement query(db, "SELECT feature_type, COUNT(*) FROM marked_feature GROUP BY feature_type;");
 
-    // Print the results
-    return {{"0", std::get<0>(results[0])},
-            {"1", std::get<0>(results[1])},
-            {"2", std::get<0>(results[2])}};
+    // Loop to execute the query step by step, to get rows of result
+    std::map<std::string, int> group_counts;
+    while (query.executeStep())
+    {
+        // Demonstrate how to get some typed column value
+        int type = query.getColumn(0);
+        int count = query.getColumn(1);
+        group_counts.insert(std::make_pair(std::to_string(type), count));
+    }
+
+    return group_counts;
 }

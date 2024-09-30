@@ -9,7 +9,7 @@ qt5gui = dependency('qt5', modules: 'Gui')
 inja_dep = dependency('inja')
 
 # Add SQLite ORM as a subproject dependency
-sqlite_orm_dep = dependency('sqlite_orm')
+sqlitecpp_dep = dependency('sqlitecpp')
 
 processed = qt5_mod.preprocess(
   moc_headers: 'mainwindow.h',
@@ -20,5 +20,5 @@ processed = qt5_mod.preprocess(
 q5exe = executable(
   'mesonqtinja',
   sources: ['main.cpp', 'db.cpp', 'repgen/repgen.cpp', 'mainwindow.cpp', processed],
-  dependencies: [qt5widgets, qt5core, qt5gui, inja_dep, sqlite_orm_dep],
+  dependencies: [qt5widgets, qt5core, qt5gui, inja_dep, sqlitecpp_dep],
 )

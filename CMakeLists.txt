@@ -10,6 +10,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
+find_package(SQLiteCpp CONFIG REQUIRED)
 
 # Find the library
 find_library(PIG_REPGEN_CORE_LIB NAMES pig_repgen_core
@@ -29,9 +30,6 @@ endif()
 
 # Add include directories
 include_directories(${PIG_REPGEN_CORE_INCLUDE_DIR})
-
-# Find SQLitecpp library
-find_package(SQLiteCpp CONFIG REQUIRED)
 
 if(CMAKE_VERSION VERSION_LESS "3.7.0")
     set(CMAKE_INCLUDE_CURRENT_DIR ON)

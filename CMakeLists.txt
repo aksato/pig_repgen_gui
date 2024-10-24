@@ -19,7 +19,7 @@ find_library(PIG_REPGEN_CORE_LIB NAMES pig_repgen_core
 )
 
 # Find the headers
-find_path(PIG_REPGEN_CORE_INCLUDE_DIR NAMES repgen/repgen.h db.h
+find_path(PIG_REPGEN_CORE_INCLUDE_DIR NAMES ReportService.h PdfCompiler.h
           PATHS "${PIG_REPGEN_INSTALL_PREFIX}/include"
 )
 

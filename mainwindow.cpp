@@ -2,9 +2,9 @@
 #include "./ui_mainwindow.h"
 #include <QDebug>
 #include <QString>
-#include "repgen/repgen.h"
+#include "ReportService.h"
+#include "PdfCompiler.h"
 #include <QFileDialog>
-#include "db.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -31,13 +31,19 @@ void MainWindow::on_generatePushButton_clicked()
     std::string dbFile = ui->dbFilenameLineEdit->text().toStdString();
 
     // Generate latex as string
-    std::string renderedLatex = repgen::generateAnomaliesSummary(dbFile);
+    ReportService reportService(dbFile);
+    auto renderedLatex = reportService.request("most_severe_anomalies");
+    if (!renderedLatex)
+    {
+        ui->statusbar->showMessage(tr("Error generating tex content!"), 5000);
+        return;
+    }
 
     // Get the final output PDF path from filenameLineEdit
     QString pdfFilePath = ui->filenameLineEdit->text();
 
     // Compile LaTeX to PDF using a generated .tex file
-    if (!repgen::compileToPdf(renderedLatex, pdfFilePath.toStdString()))
+    if (!PdfCompiler::compile(*renderedLatex, pdfFilePath.toStdString()))
     {
         ui->statusbar->showMessage(tr("Error writing to file!"), 5000);
         return;

@@ -32,7 +32,8 @@ void MainWindow::on_generatePushButton_clicked()
 
     // Generate latex as string
     ReportService reportService(dbFile);
-    auto renderedLatex = reportService.request("most_severe_anomalies");
+    ReportService::ServiceOptions options = {false};
+    auto renderedLatex = reportService.request("features_identification", options);
     if (!renderedLatex)
     {
         ui->statusbar->showMessage(tr("Error generating tex content!"), 5000);
